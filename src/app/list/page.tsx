@@ -18,7 +18,7 @@ export default async function List() {
               className="font-bold text-[20px]">
               <h4>{item.title}</h4>
             </Link>
-            <DetailLink />
+            <DetailLink pageId={item._id.toString()} />
             <p className="text-gray-400 my-[5px]">1월 1일</p>
           </div>
         );

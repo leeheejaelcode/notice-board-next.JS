@@ -2,15 +2,14 @@
 
 import { useRouter } from "next/navigation";
 
-export default function DetailLink() {
+export default function DetailLink({ pageId }: { pageId: string }) {
   const router = useRouter();
-
   return (
     <button
       onClick={() => {
-        router.push("/");
+        router.push(`/edit/${pageId}`);
       }}>
-      버튼
+      ✏️
     </button>
   );
 }
