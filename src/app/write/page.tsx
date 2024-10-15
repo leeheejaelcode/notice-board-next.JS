@@ -11,28 +11,34 @@ export default function Write() {
   };
 
   return (
-    <div className="p-10">
-      <h1 className="mb-5 font-bold">글작성</h1>
-      <form action="/api/post/new" method="post" onSubmit={submitBtn}>
-        <label htmlFor="title">제목</label>
+    <div className="p-10 ">
+      <h1 className="font-bold mb-3">글작성</h1>
+      <form
+        action="/api/post/new"
+        method="post"
+        onSubmit={submitBtn}
+        className="flex flex-col gap-3">
         <div>
+          <label htmlFor="title"></label>
           <input
             type="text"
             name="title"
             id="title"
-            className="border border-solid border-black p-[20px]"
+            className="border border-solid border-black p-[10px] w-full"
+            placeholder="제목"
           />
         </div>
-        <label htmlFor="content">내용</label>
         <div>
+          <label htmlFor="content"></label>
           <input
             type="text"
             name="content"
             id="content"
-            className="border border-solid border-black p-[20px]"
+            className="border border-solid border-black p-[10px] w-full"
+            placeholder="내용"
           />
         </div>
-        <button type="submit" className="rounded-md bg-slate-300 p-2">
+        <button type="submit" className="rounded-md bg-slate-200 p-2 text-md">
           글 발행
         </button>
       </form>
