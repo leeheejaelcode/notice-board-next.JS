@@ -1,6 +1,8 @@
 import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,16 +12,20 @@ export default async function handler(
     const db = (await connectDB).db("forum");
     // 쿼리에서 id 가져오기
     const id = req.query.id;
-
+    const session = await getServerSession(req, res, authOptions);
     // id가 없거나 string 타입이 아닐 경우 에러 처리
     if (!id || typeof id !== "string") {
       return res.status(400).json({ message: "Invalid ID" });
     }
 
     try {
-      // MongoDB에서 _id를 ObjectId로 변환하여 삭제
-      await db.collection("post").deleteOne({ _id: new ObjectId(id) });
-
+      // 현재 user의 정보를 확인하고 그 user의 이메일이 일치하면 삭제시킴
+      // const findUser = await db
+      //   .collection("post")
+      //   .findOne({ _id: new ObjectId(id) }); // 정상출력됨
+      // if (findUser?.email === session?.user?.email) {
+      // await db.collection("post").deleteOne({ _id: new ObjectId(id) });
+      // }
       // 삭제 성공 시 200 OK 응답
       return res.status(200).redirect(302, "/list");
     } catch (error) {
