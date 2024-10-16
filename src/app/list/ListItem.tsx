@@ -1,6 +1,5 @@
 "use client";
 
-import { WithId, Document } from "mongodb";
 import Link from "next/link";
 import DetailLink from "./DetailLink";
 
@@ -8,15 +7,10 @@ interface ListItemProps {
   _id: string;
   title: string;
   content: string;
+  author: string;
 }
 
-export default function ListItem({ result }: { result: WithId<Document>[] }) {
-  const items: ListItemProps[] = result.map((item) => ({
-    _id: item._id.toString(),
-    title: item.title ?? "Untitled",
-    content: item.content ?? "No content available",
-  }));
-
+export default function ListItem({ result }: { result: ListItemProps[] }) {
   const handleDelete = (i: number, id: string) => {
     const items = Array.from(document.querySelectorAll("[data-id]"));
     const targetElement = items[i];
@@ -25,16 +19,17 @@ export default function ListItem({ result }: { result: WithId<Document>[] }) {
     /*                               fetch의 body 문법                               */
     /* -------------------------------------------------------------------------- */
 
-    // fetch(`/api/post/delete/${id}`, {
-    //   method: "DELETE",
-    // }).then(() => {
-    //   if (targetElement) {
-    //     targetElement.classList.add("opacity-0");
-    //     setTimeout(() => {
-    //       targetElement.remove();
-    //     }, 1000);
-    //   }
-    // });
+    fetch(`/api/post/delete/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      if (targetElement) {
+        targetElement.classList.add("opacity-0");
+        console.log(targetElement);
+        setTimeout(() => {
+          targetElement.remove();
+        }, 1000);
+      }
+    });
 
     /* -------------------------------------------------------------------------- */
     /*                                    쿼리스트링                                   */
@@ -57,22 +52,22 @@ export default function ListItem({ result }: { result: WithId<Document>[] }) {
     // /api/abc/[작명].ts 로 짓게되면 {'작명' : 'kim'}으로 정보가 넘어갑니다.
     // 받을때에는 req.query.작명으로 사용이 가능합니다.
 
-    fetch(`/api/abc/${id}`).then(() => {
-      if (targetElement) {
-        targetElement.classList.add("opacity-0");
-        setTimeout(() => {
-          targetElement.remove();
-        }, 1000);
-      }
-    });
+    // fetch(`/api/abc/${id}`).then(() => {
+    //   if (targetElement) {
+    //     targetElement.classList.add("opacity-0");
+    //     setTimeout(() => {
+    //       targetElement.remove();
+    //     }, 1000);
+    //   }
+    // });
   };
 
   return (
     <div>
-      {items.map((item, i) => {
+      {result.map((item, i) => {
         return (
           <div
-            className={`bg-white rounded-[10px] p-[20px] mb-[5px] shadow-[0_2px_4px_0px_rgb(224,224,224)] transition-opacity opacity-100 duration-1000
+            className={`bg-white rounded-[10px] p-[20px] mb-[5px] shadow-[0_2px_4px_0px_rgb(224,224,224)] transition-opacity duration-1000 
             `}
             key={item._id}
             data-id={item._id}>
