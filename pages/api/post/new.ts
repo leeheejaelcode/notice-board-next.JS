@@ -1,10 +1,16 @@
 import { connectDB } from "@/util/database";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getServerSession(req, res, authOptions);
+  if (session) {
+    req.body.email = session?.user?.email;
+  }
   if (req.method === "POST") {
     const db = (await connectDB).db("forum");
     try {
