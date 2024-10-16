@@ -1,6 +1,12 @@
 import { connectDB } from "@/util/database";
 import ListItem from "./ListItem";
+// static렌더링과 dynamic렌더링
+// static 렌더링은 pnpm build 할 때 만든 html페이지 그대로 유저에게 보냅니다.
+// dynamic 렌더링은 유저가 페이지에 접속할때 마다 html을 새로 만들어서 보내줍니다.
 
+// 예약된 변수명 dynamic
+// 이 페이지를 보여줄때 dynamic렌더링을해서 보여줍니다.
+export const dynamic = "force-dynamic"; // force-static로 설정하면 static렌더링을 해서 보여줍니다.
 export default async function List() {
   const db = (await connectDB).db("forum");
   const result = await db.collection("post").find().toArray();
