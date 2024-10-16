@@ -13,25 +13,69 @@ interface ListItemProps {
 export default function ListItem({ result }: { result: WithId<Document>[] }) {
   const items: ListItemProps[] = result.map((item) => ({
     _id: item._id.toString(),
-    title: item.title ?? "Untitled", // title 필드가 없으면 기본값
-    content: item.content ?? "No content available", // content 필드가 없으면 기본값
+    title: item.title ?? "Untitled",
+    content: item.content ?? "No content available",
   }));
 
-  const handleDelete = (id: string) => {
-    fetch(`/api/post/delete/${id}`, {
-      method: "DELETE",
-    }).then((res) => {
-      console.log(res + "삭제완료");
+  const handleDelete = (i: number, id: string) => {
+    const items = Array.from(document.querySelectorAll("[data-id]"));
+    const targetElement = items[i];
+
+    /* -------------------------------------------------------------------------- */
+    /*                               fetch의 body 문법                               */
+    /* -------------------------------------------------------------------------- */
+
+    // fetch(`/api/post/delete/${id}`, {
+    //   method: "DELETE",
+    // }).then(() => {
+    //   if (targetElement) {
+    //     targetElement.classList.add("opacity-0");
+    //     setTimeout(() => {
+    //       targetElement.remove();
+    //     }, 1000);
+    //   }
+    // });
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    쿼리스트링                                   */
+    /* -------------------------------------------------------------------------- */
+    // fetch 통신을 할때 보낼 서버 api에다가 ?데이터이름=데이터를 넣어주게 되면 데이터가 함께 보내집니다.
+    // 데이터를 여러개 보낼때에는 &를 사용해 줍니다.
+
+    // fetch(`/api/queryString?id=${id}`).then(() => {
+    //   if (targetElement) {
+    //     targetElement.classList.add("opacity-0");
+    //     setTimeout(() => {
+    //       targetElement.remove();
+    //     }, 1000);
+    //   }
+    // });
+
+    /* -------------------------------------------------------------------------- */
+    /*                                 URL 파라미터 문법                                */
+    /* -------------------------------------------------------------------------- */
+    // /api/abc/[작명].ts 로 짓게되면 {'작명' : 'kim'}으로 정보가 넘어갑니다.
+    // 받을때에는 req.query.작명으로 사용이 가능합니다.
+
+    fetch(`/api/abc/${id}`).then(() => {
+      if (targetElement) {
+        targetElement.classList.add("opacity-0");
+        setTimeout(() => {
+          targetElement.remove();
+        }, 1000);
+      }
     });
   };
 
   return (
     <div>
-      {items.map((item) => {
+      {items.map((item, i) => {
         return (
           <div
-            className="bg-white rounded-[10px] p-[20px] mb-[5px] shadow-[0_2px_4px_0px_rgb(224,224,224)]"
-            key={item._id}>
+            className={`bg-white rounded-[10px] p-[20px] mb-[5px] shadow-[0_2px_4px_0px_rgb(224,224,224)] transition-opacity opacity-100 duration-1000
+            `}
+            key={item._id}
+            data-id={item._id}>
             <Link
               href={`/detail/${item._id}`}
               className="font-bold text-[20px]">
@@ -42,7 +86,7 @@ export default function ListItem({ result }: { result: WithId<Document>[] }) {
               type="button"
               title="삭제"
               onClick={() => {
-                handleDelete(item._id);
+                handleDelete(i, item._id);
               }}>
               🗑️
             </button>
