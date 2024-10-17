@@ -24,7 +24,6 @@ export default function ListItem({ result }: { result: ListItemProps[] }) {
     }).then(() => {
       if (targetElement) {
         targetElement.classList.add("opacity-0");
-        console.log(targetElement);
         setTimeout(() => {
           targetElement.remove();
         }, 1000);
