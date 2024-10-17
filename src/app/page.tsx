@@ -1,4 +1,4 @@
-import { connectDB } from "@/util/database";
+// import { connectDB } from "@/util/database";
 
 export const revalidate = 60;
 
