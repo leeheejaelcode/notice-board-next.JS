@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 
 // MongoDB 연결 URL과 옵션을 설정합니다.
 const url =
-  "mongodb+srv://leeheejaelcode:admin1234@cluster0.ftngm.mongodb.net/?retryWrites=true&w=majority"; // 연결할 MongoDB의 클러스터 URL
+  "mongodb+srv://leeheejaelcode:admin1234@cluster0.ftngm.mongodb.net/forum?retryWrites=true&w=majority";
 
 // MongoClient 연결을 관리할 변수를 선언합니다. Promise 객체를 사용해 비동기적으로 연결을 관리합니다.
 let connectDB: Promise<MongoClient>;
