@@ -17,15 +17,22 @@ export default async function handler(
     if (!id || typeof id !== "string") {
       return res.status(400).json({ message: "Invalid ID" });
     }
+    if (!session) {
+      console.log("로그인 상태가 아닙니다.");
+      return;
+    }
 
     try {
       // 현재 user의 정보를 확인하고 그 user의 이메일이 일치하면 삭제시킴
-      // const findUser = await db
-      //   .collection("post")
-      //   .findOne({ _id: new ObjectId(id) }); // 정상출력됨
-      // if (findUser?.email === session?.user?.email) {
-      // await db.collection("post").deleteOne({ _id: new ObjectId(id) });
-      // }
+      const findUser = await db
+        .collection("post")
+        .findOne({ _id: new ObjectId(id) }); // 정상출력됨
+      if (findUser?.email === session?.user?.email) {
+        await db.collection("post").deleteOne({ _id: new ObjectId(id) });
+      } else {
+        console.log("내가 쓴 글이 아닙니다.");
+        return;
+      }
       // 삭제 성공 시 200 OK 응답
       return res.status(200).redirect(302, "/list");
     } catch (error) {
