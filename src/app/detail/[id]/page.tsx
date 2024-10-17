@@ -1,5 +1,6 @@
 import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
+import Comment from "./Comment";
 
 export default async function Detail({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -7,9 +8,10 @@ export default async function Detail({ params }: { params: { id: string } }) {
   const result = await db.collection("post").findOne({ _id: new ObjectId(id) }); // id 사용
   return (
     <div>
-      <h4 className="font-bold text-[50px]">상세페이지</h4>
+      <h2 className="font-bold text-[30px]">상세페이지</h2>
       <h4 className="font-bold text-[20px]">제목 : {result?.title}</h4>
-      <h4 className="text-[20px]">내용 : {result?.content}</h4>
+      <p>내용 : {result?.content}</p>
+      <Comment />
     </div>
   );
 }
