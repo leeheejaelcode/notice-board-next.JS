@@ -24,3 +24,6 @@ export default async function handler(
     }
   }
 }
+
+// updateOne시 덮어쓰지말고 다른것도 가능합니다
+// $inc 기본값의 +1이 됩니다.
