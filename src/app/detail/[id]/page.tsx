@@ -1,19 +1,21 @@
 import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Comment from "./Comment";
+import { notFound } from "next/navigation";
 
 export default async function Detail({ params }: { params: { id: string } }) {
   const { id } = params;
   const db = (await connectDB).db("forum");
   const result = await db.collection("post").findOne({ _id: new ObjectId(id) }); // id 사용
+
+  if (!result) notFound();
+
   return (
     <div>
       <h4 className="font-bold text-[20px] p-5 bg-slate-100">
         {result?.title}
       </h4>
-      <p className="p-5 bg-slate-50">
-        {result?.content}
-      </p>
+      <p className="p-5 bg-slate-50">{result?.content}</p>
       <Comment />
     </div>
   );
