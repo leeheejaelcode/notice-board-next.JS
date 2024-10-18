@@ -8,9 +8,12 @@ export default async function Detail({ params }: { params: { id: string } }) {
   const result = await db.collection("post").findOne({ _id: new ObjectId(id) }); // id 사용
   return (
     <div>
-      <h2 className="font-bold text-[30px]">상세페이지</h2>
-      <h4 className="font-bold text-[20px]">제목 : {result?.title}</h4>
-      <p>내용 : {result?.content}</p>
+      <h4 className="font-bold text-[20px] p-5 bg-slate-100">
+        {result?.title}
+      </h4>
+      <p className="p-5 bg-slate-50">
+        {result?.content}
+      </p>
       <Comment />
     </div>
   );
