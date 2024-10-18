@@ -36,9 +36,9 @@ export default async function RootLayout({
         <nav className="bg-slate-300 p-5 flex gap-3 items-center">
           <Link href="/">Home</Link>
           <Link href="/list">List</Link>
+          <Link href="/write">Write</Link>
           {session ? (
             <>
-              <Link href="/write">Write</Link>
               <p>{session?.user?.name}</p>
               <LogoutBtn />
             </>
