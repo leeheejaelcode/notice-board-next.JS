@@ -13,10 +13,10 @@ export default async function handler(
         .findOne({ userId: req.body.userId });
 
       if (result !== null) {
-        return res.status(200).json("중복된 아이디가있습니다.");
+        return res.status(200).json("이미 가입한 아이디가 있습니다.");
       }
-      // await db.collection("user").insertOne(req.body);
-      return res.status(200).json(result);
+      await db.collection("user").insertOne(req.body);
+      return res.status(200).redirect(302, "/login");
     } catch (error) {
       console.log(error);
       return res.status(400).json(error);
