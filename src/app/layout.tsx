@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Link from "next/link";
-import LoginBtn from "./LoginBtn";
+import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import LogoutBtn from "./LogoutBtn";
-import { cookies } from "next/headers";
-import DarkModeButton from "./DarkModeButton";
+import Nav from "./nav";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,8 +28,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-
-  const darkModeValue = cookies().get("darkMode")?.value;
+  const darkModeValue = cookies().get("darkMode")?.value || "false";
 
   return (
     <html lang="ko">
@@ -42,38 +38,7 @@ export default async function RootLayout({
             ? "bg-black text-white"
             : "bg-white text-black"
         }`}>
-        <nav className="bg-slate-300 p-5 flex gap-3 items-center">
-          <Link
-            href="/"
-            className={`${
-              darkModeValue === "true" ? "text-white" : "text-black"
-            }`}>
-            Home
-          </Link>
-          <Link
-            href="/list"
-            className={`${
-              darkModeValue === "true" ? "text-white" : "text-black"
-            }`}>
-            List
-          </Link>
-          <Link
-            href="/write"
-            className={`${
-              darkModeValue === "true" ? "text-white" : "text-black"
-            }`}>
-            Write
-          </Link>
-          <DarkModeButton darkModeValue={darkModeValue} />
-          {session ? (
-            <>
-              <p>{session?.user?.name}</p>
-              <LogoutBtn />
-            </>
-          ) : (
-            <LoginBtn />
-          )}
-        </nav>
+        <Nav session={session} darkModeValue={darkModeValue} />
         {children}
       </body>
     </html>
